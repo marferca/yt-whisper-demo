@@ -6,6 +6,7 @@ This Streamlit app showcases the power of [Whisper](https://github.com/openai/wh
 
 Note: This demo utilizes the tiny version of the model.
 
+[Streamlit App](https://marferca-yt-whisper-demo-streamlit-app-luptcq.streamlitapp.com/)
 <img src="media/streamlit_app.gif" />
 
 
