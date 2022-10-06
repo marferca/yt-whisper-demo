@@ -25,6 +25,16 @@ def main():
     unsafe_allow_html=True
     )
 
+    # Intro text
+    st.markdown(
+        """
+        This Streamlit app lets you transcribe YouTube videos using 
+        [Whisper](https://github.com/openai/whisper), 
+        a general-purpose speech recognition model developed by 
+        [OpenAI](https://openai.com/).
+        """
+    )
+
     # Load Whisper model
     with st.spinner("Loading Whisper model..."):
         model = load_whisper_model()
