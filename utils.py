@@ -8,9 +8,8 @@ import whisper
 
 SAMPLES = {
     "DALL·E 2 Explained by OpenAI": "https://www.youtube.com/watch?v=qTgPSKKjfVg",
-    "Streamlit Shorts: How to make a select box by Streamlit": "https://www.youtube.com/watch?v=8-GavXeFlEA",
-    "Esta Inteligencia Artificial ESCRIBE MEJOR QUE TÚ... ¡Y puedes probarla! | GPT-3 by Dot CSV": "https://www.youtube.com/watch?v=C1eOiOkD_8A"
-}
+    "Streamlit Shorts: How to make a select box by Streamlit": "https://www.youtube.com/watch?v=8-GavXeFlEA"
+    }
 
 
 def sample_to_url(option):
