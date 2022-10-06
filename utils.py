@@ -27,7 +27,7 @@ def _get_audio_from_youtube_url(url):
     if not os.path.exists('data'):
         os.makedirs('data')
     yt.streams.filter(only_audio=True).first().download(filename=os.path.join('data','audio.mp3'))
-    return yt
+    #return yt
 
 
 def _whisper_result_to_srt(result):
@@ -50,7 +50,7 @@ def _whisper_result_to_srt(result):
     return "\n".join(text)
 
 
-@st.cache(show_spinner=False, max_entries=1)
+@st.cache(show_spinner=False)
 def transcribe_youtube_video(model, url):
     _get_audio_from_youtube_url(url)
     result = model.transcribe(os.path.join('data','audio.mp3'))
