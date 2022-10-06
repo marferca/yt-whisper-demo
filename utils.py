@@ -50,7 +50,7 @@ def _whisper_result_to_srt(result):
     return "\n".join(text)
 
 
-@st.cache(show_spinner=False)
+@st.cache(show_spinner=False, max_entries=1)
 def transcribe_youtube_video(model, url):
     _get_audio_from_youtube_url(url)
     result = model.transcribe(os.path.join('data','audio.mp3'))
