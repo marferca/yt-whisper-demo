@@ -41,6 +41,7 @@ def main():
     with st.spinner("Loading Whisper model..."):
         model =  load_whisper_model()
 
+
     # Title: Input data
     st.markdown("## Input data")
 
@@ -110,6 +111,7 @@ def main():
 
                 # Download data
                 st.download_button("Download", data=data, file_name="captions.{}".format(file_extension))
+
 
 if __name__ == "__main__":
     main()
