@@ -16,7 +16,6 @@ def sample_to_url(option):
     return SAMPLES.get(option)
 
 
-@st.experimental_singleton(show_spinner=False)
 def load_whisper_model():
     model = whisper.load_model('tiny')
     return model
@@ -27,7 +26,6 @@ def _get_audio_from_youtube_url(url):
     if not os.path.exists('data'):
         os.makedirs('data')
     yt.streams.filter(only_audio=True).first().download(filename=os.path.join('data','audio.mp3'))
-    return yt
 
 
 def _whisper_result_to_srt(result):
@@ -50,9 +48,9 @@ def _whisper_result_to_srt(result):
     return "\n".join(text)
 
 
-@st.cache(show_spinner=False, max_entries=1)
-def transcribe_youtube_video(model, url):
+@st.experimental_memo(show_spinner=False, max_entries=1)
+def transcribe_youtube_video(_model, url):
     _get_audio_from_youtube_url(url)
-    result = model.transcribe(os.path.join('data','audio.mp3'))
+    result = _model.transcribe(os.path.join('data','audio.mp3'))
     result['srt'] = _whisper_result_to_srt(result)
     return result
