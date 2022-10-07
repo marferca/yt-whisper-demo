@@ -15,7 +15,7 @@ SAMPLES = {
 def sample_to_url(option):
     return SAMPLES.get(option)
 
-
+@st.cache(show_spinner=False)
 def load_whisper_model():
     model = whisper.load_model('tiny')
     return model

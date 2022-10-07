@@ -36,9 +36,8 @@ def main():
     )
 
     # Load Whisper model
-    if 'model' not in st.session_state:
-        with st.spinner("Loading Whisper model..."):
-            st.session_state['model'] =  load_whisper_model()
+    with st.spinner("Loading Whisper model..."):
+        model =  load_whisper_model()
 
     # Title: Input data
     st.markdown("## Input data")
@@ -79,7 +78,7 @@ def main():
             
             # Transcribe
             with st.spinner("Transcribing audio..."):
-                result = transcribe_youtube_video(st.session_state['model'], url)
+                result = transcribe_youtube_video(model, url)
             
             # Print detected language
             st.success("Detected language: {}".format(result['language']))
