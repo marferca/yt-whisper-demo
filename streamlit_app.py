@@ -1,3 +1,5 @@
+from time import sleep
+
 import streamlit as st
 
 from utils import *
@@ -78,25 +80,42 @@ def main():
             
             # Transcribe
             with st.spinner("Transcribing audio..."):
-                result = transcribe_youtube_video(model, url)
-            
-            # Print detected language
-            st.success("Detected language: {}".format(result['language']))
-            
-            # Select output file extension and get data
-            file_extension = st.selectbox("File extension:", options=["TXT (.txt)", "SubRip (.srt)"])
-            if file_extension == "TXT (.txt)":
-                file_extension = "txt"
-                data = result['text'].strip()
-            elif file_extension == "SubRip (.srt)":
-                file_extension = "srt"
-                data = result['srt']
+                result = None
+                error_count = 0
+                while not result:
+                    try:
+                        result = transcribe_youtube_video(model, url)
+                    except RuntimeError:
+                        result = None
+                        error_count += 1
+                        sleep(4)
+                
+                    if error_count == 1:
+                        st.warning(
+                            """
+                            Oops! Someone else is using the model right now to transcribe another video. 
+                            Let's wait for a few seconds.
+                            """
+                        )
 
-            # Print output
-            data = st.text_area("Text:", value=data, height=350)
+            if result:
+                # Print detected language
+                st.success("Detected language: {}".format(result['language']))
+                
+                # Select output file extension and get data
+                file_extension = st.selectbox("File extension:", options=["TXT (.txt)", "SubRip (.srt)"])
+                if file_extension == "TXT (.txt)":
+                    file_extension = "txt"
+                    data = result['text'].strip()
+                elif file_extension == "SubRip (.srt)":
+                    file_extension = "srt"
+                    data = result['srt']
 
-            # Download data
-            st.download_button("Download", data=data, file_name="captions.{}".format(file_extension))
+                # Print output
+                data = st.text_area("Text:", value=data, height=350)
+
+                # Download data
+                st.download_button("Download", data=data, file_name="captions.{}".format(file_extension))
 
 if __name__ == "__main__":
     main()
