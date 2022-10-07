@@ -81,22 +81,16 @@ def main():
             # Transcribe
             with st.spinner("Transcribing audio..."):
                 result = None
-                error_count = 0
-                while not result:
-                    try:
-                        result = transcribe_youtube_video(model, url)
-                    except RuntimeError:
-                        result = None
-                        error_count += 1
-                        sleep(4)
-                
-                    if error_count == 1:
-                        st.warning(
-                            """
-                            Oops! Someone else is using the model right now to transcribe another video. 
-                            Let's wait for a few seconds.
-                            """
-                        )
+                try:
+                    result = transcribe_youtube_video(model, url)
+                except RuntimeError:
+                    result = None
+                    st.warning(
+                        """
+                        Oops! Someone else is using the model right now to transcribe another video. 
+                        Please try again in a few seconds.
+                        """
+                    )
 
             if result:
                 # Print detected language
