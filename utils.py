@@ -1,4 +1,5 @@
 import os
+import re
 
 import numpy as np
 from pytube import YouTube
@@ -11,6 +12,8 @@ SAMPLES = {
     "Streamlit Shorts: How to make a select box by Streamlit": "https://www.youtube.com/watch?v=8-GavXeFlEA"
     }
 
+MAX_VIDEO_LENGTH = 8*60
+
 
 def sample_to_url(option):
     return SAMPLES.get(option)
@@ -19,6 +22,15 @@ def sample_to_url(option):
 def load_whisper_model():
     model = whisper.load_model('tiny', device='cpu')
     return model
+
+
+def valid_url(url):
+ return re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url)
+
+
+def get_video_duration_from_youtube_url(url):
+    yt = YouTube(url)
+    return yt.length
 
 
 def _get_audio_from_youtube_url(url):
