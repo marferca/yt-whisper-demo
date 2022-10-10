@@ -41,6 +41,7 @@ def main():
     with st.spinner("Loading Whisper model..."):
         model =  load_whisper_model()
 
+
     # Title: Input data
     st.markdown("## Input data")
 
