@@ -65,55 +65,58 @@ def main():
         right_url = valid_url(url)
 
         if right_url:
-            # Display YouTube video
-            _,col2,_ =st.columns([0.35, 1, 0.35])
-            col2.video(url)
+            if get_video_duration_from_youtube_url(url) <= MAX_VIDEO_LENGTH: 
+                # Display YouTube video
+                _,col2,_ =st.columns([0.35, 1, 0.35])
+                col2.video(url)
 
-            # Transcribe checkbox
-            transcribe_cb = st.checkbox("Transcribe")
+                # Transcribe checkbox
+                transcribe_cb = st.checkbox("Transcribe")
 
-            if transcribe_cb:
-                st.info(
-                    """
-                    If the transcription process takes just a few seconds, this means that the output was cached.
-                    You can try again with another sample or a custom YouTube URL!
-                    """
-                )
+                if transcribe_cb:
+                    st.info(
+                        """
+                        If the transcription process takes just a few seconds, this means that the output was cached.
+                        You can try again with another sample or a custom YouTube URL!
+                        """
+                    )
 
-                st.markdown("## Output")
-                
-                # Transcribe
-                with st.spinner("Transcribing audio..."):
-                    result = None
-                    try:
-                        result = transcribe_youtube_video(model, url)
-                    except RuntimeError:
-                        result = None
-                        st.warning(
-                            """
-                            Oops! Someone else is using the model right now to transcribe another video. 
-                            Please try again in a few seconds.
-                            """
-                        )
-
-                if result:
-                    # Print detected language
-                    st.success("Detected language: {}".format(result['language']))
+                    st.markdown("## Output")
                     
-                    # Select output file extension and get data
-                    file_extension = st.selectbox("File extension:", options=["TXT (.txt)", "SubRip (.srt)"])
-                    if file_extension == "TXT (.txt)":
-                        file_extension = "txt"
-                        data = result['text'].strip()
-                    elif file_extension == "SubRip (.srt)":
-                        file_extension = "srt"
-                        data = result['srt']
+                    # Transcribe
+                    with st.spinner("Transcribing audio..."):
+                        result = None
+                        try:
+                            result = transcribe_youtube_video(model, url)
+                        except RuntimeError:
+                            result = None
+                            st.warning(
+                                """
+                                Oops! Someone else is using the model right now to transcribe another video. 
+                                Please try again in a few seconds.
+                                """
+                            )
 
-                    # Print output
-                    data = st.text_area("Text:", value=data, height=350)
+                    if result:
+                        # Print detected language
+                        st.success("Detected language: {}".format(result['language']))
+                        
+                        # Select output file extension and get data
+                        file_extension = st.selectbox("File extension:", options=["TXT (.txt)", "SubRip (.srt)"])
+                        if file_extension == "TXT (.txt)":
+                            file_extension = "txt"
+                            data = result['text'].strip()
+                        elif file_extension == "SubRip (.srt)":
+                            file_extension = "srt"
+                            data = result['srt']
 
-                    # Download data
-                    st.download_button("Download", data=data, file_name="captions.{}".format(file_extension))
+                        # Print output
+                        data = st.text_area("Text:", value=data, height=350)
+
+                        # Download data
+                        st.download_button("Download", data=data, file_name="captions.{}".format(file_extension))
+            else:
+                st.warning("Sorry, the video has to be shorter than or equal to eight minutes.")
         else:
             st.warning("Invalid YouTube URL.")
 

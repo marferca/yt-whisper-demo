@@ -12,10 +12,11 @@ SAMPLES = {
     "Streamlit Shorts: How to make a select box by Streamlit": "https://www.youtube.com/watch?v=8-GavXeFlEA"
     }
 
+MAX_VIDEO_LENGTH = 8*60
+
 
 def sample_to_url(option):
     return SAMPLES.get(option)
-
 
 @st.cache(show_spinner=False)
 def load_whisper_model():
@@ -25,6 +26,11 @@ def load_whisper_model():
 
 def valid_url(url):
  return re.search(r'((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+', url)
+
+
+def get_video_duration_from_youtube_url(url):
+    yt = YouTube(url)
+    return yt.length
 
 
 def _get_audio_from_youtube_url(url):
