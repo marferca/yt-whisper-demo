@@ -1,7 +1,6 @@
 import os
 import re
 
-import numpy as np
 from pytube import YouTube
 import streamlit as st
 import whisper
