@@ -39,6 +39,7 @@ scoop install ffmpeg
 Lastly, run the following command to launch the Streamlit app.
 ```bash
 streamlit run streamlit_app.py
+```
 
 ## Useful links
 * [Whisper paper](https://cdn.openai.com/papers/whisper.pdf)
